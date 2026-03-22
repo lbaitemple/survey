@@ -449,6 +449,95 @@
         .export-btn {
             margin-left: 10px;
         }
+
+        /* WiFi Section Styles */
+        .wifi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .wifi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .config-tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .config-tab.active {
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+        }
+
+        .validation-item {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .validation-item.success {
+            background: rgba(46, 213, 115, 0.2);
+            color: #2ed573;
+        }
+
+        .validation-item.error {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+
+        .validation-item.pending {
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .modal-content {
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -678,8 +767,12 @@
 
             <div id="admin-panel" class="hidden">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-                    <h2>📊 Admin Dashboard</h2>
+                    <div>
+                        <h2 style="display: inline;">📊 Admin Dashboard</h2>
+                        <span id="syncStatus" style="margin-left: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;"></span>
+                    </div>
                     <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                        <button class="btn btn-secondary" onclick="syncFromCloud()" id="syncBtn">☁️ Sync</button>
                         <button class="btn btn-secondary" onclick="exportData()">📥 CSV</button>
                         <button class="btn btn-secondary" onclick="downloadJSON()">💾 Save JSON</button>
                         <label class="btn btn-secondary" style="cursor: pointer;">
@@ -730,6 +823,145 @@
                 </div>
             </div>
         </section>
+
+        <!-- WiFi Credentials Section -->
+        <section id="wifi-section" class="card hidden">
+            <h2 style="margin-bottom: 20px; text-align: center;">📶 Generate WiFi Credentials</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" class="wifi-grid">
+                <!-- Left: Password Hash Generator -->
+                <div class="card" style="background: rgba(255, 255, 255, 0.05);">
+                    <h3 style="margin-bottom: 15px;">🔒 Password Hash Generator</h3>
+                    <div class="form-group">
+                        <label>Enter Eduroam Password:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="password" id="eduroamPassword" placeholder="Type your password" style="flex: 1;">
+                            <button class="btn btn-secondary" onclick="togglePasswordVisibility()" style="padding: 10px 15px;">Show</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>MD4 Hash (UTF-16LE):</label>
+                        <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 10px; font-family: monospace; word-break: break-all;" id="hashOutput">
+                            <span style="color: #94a3b8;">(hash will appear here)</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateHash()" style="width: 100%;">Generate Hash</button>
+                    <p style="margin-top: 15px; text-align: center;">
+                        <a href="#" onclick="showSampleWireless(); return false;" style="color: #00d4ff;">View sample wireless.txt file</a>
+                    </p>
+                </div>
+
+                <!-- Right: Network Configuration -->
+                <div class="card" style="background: rgba(255, 255, 255, 0.05);">
+                    <h3 style="margin-bottom: 15px;">📄 Network Configuration</h3>
+                    
+                    <!-- Config Tabs -->
+                    <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+                        <button class="config-tab active" onclick="switchConfigTab('wireless')" id="tab-wireless">wireless.txt</button>
+                        <button class="config-tab" onclick="switchConfigTab('cloud')" id="tab-cloud">50-cloud-init.yaml</button>
+                    </div>
+
+                    <!-- Edit Config -->
+                    <div id="config-wireless">
+                        <label style="display: block; margin-bottom: 10px;">Edit wireless.txt:</label>
+                        <textarea id="wirelessConfig" style="width: 100%; height: 200px; font-family: monospace; font-size: 0.85rem;">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
+
+# AP1: IEEER2_5G
+network={
+    ssid="IEEER2_5G"
+    psk="ieeer2_5g"
+    key_mgmt=WPA-PSK
+}
+
+# AP2: WIFI_AP2
+network={
+    ssid="WIFI_AP2"
+    psk="password_ap2"
+    key_mgmt=WPA-PSK
+}
+
+# eduroam
+network={
+    ssid="eduroam"
+    key_mgmt=WPA-EAP
+    eap=PEAP
+    identity="youremail@temple.edu"
+    password=hash:YOUR_MD4_HASH_HERE
+    phase2="auth=MSCHAPV2"
+}</textarea>
+                    </div>
+
+                    <div id="config-cloud" class="hidden">
+                        <label style="display: block; margin-bottom: 10px;">Edit 50-cloud-init.yaml:</label>
+                        <textarea id="cloudConfig" style="width: 100%; height: 200px; font-family: monospace; font-size: 0.85rem;">network:
+  version: 2
+  wifis:
+    wlan0:
+      dhcp4: true
+      access-points:
+        "IEEER2_5G":              # <-- AP1
+          password: "ieeer2_5g"
+        "WIFI_AP2":               # <-- AP2  
+          password: "password_ap2"
+        "eduroam":                # <-- eduroam
+          auth:
+            key-management: eap
+            password: hash:YOUR_MD4_HASH_HERE
+            method: peap
+            identity: youremail@temple.edu
+      regulatory-domain: "US"
+  bridges:
+    br0:
+      addresses:
+        - 10.0.0.10/24</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Validation -->
+            <div class="card" style="background: rgba(255, 255, 255, 0.05); margin-top: 20px;">
+                <h3 style="margin-bottom: 15px;">✅ Configuration Validation</h3>
+                <div id="validationResults">
+                    <div class="validation-item pending">⏳ Enter your credentials above to validate</div>
+                </div>
+                <button class="btn btn-primary" onclick="validateAndDownload()" style="margin-top: 20px; width: 100%;">🔍 Validate & Download Config Files</button>
+            </div>
+
+            <!-- Download Buttons -->
+            <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+                <button class="btn btn-secondary" onclick="downloadWireless()">📥 Download wireless.txt</button>
+                <button class="btn btn-secondary" onclick="downloadCloud()">📥 Download 50-cloud-init.yaml</button>
+                <button class="btn btn-primary" onclick="applyHashToConfigs()">🔄 Apply Hash to Configs</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Sample Wireless Modal -->
+    <div id="sampleModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeSampleModal()">&times;</span>
+            <h3>Sample wireless.txt File</h3>
+            <pre style="background: #1a1a2e; padding: 15px; border-radius: 10px; overflow-x: auto; margin-top: 15px;">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
+
+network={
+    ssid="YourNetworkName"
+    psk="YourPassword"
+    key_mgmt=WPA-PSK
+}
+
+network={
+    ssid="eduroam"
+    key_mgmt=WPA-EAP
+    eap=PEAP
+    identity="yourname@university.edu"
+    password=hash:abcdef1234567890abcdef1234567890
+    phase2="auth=MSCHAPV2"
+}</pre>
+        </div>
     </div>
 
     <script>
@@ -737,6 +969,15 @@
         const ADMIN_PASSWORD = 'sac2026'; // Change this!
         const STORAGE_KEY = 'sac_survey_responses';
         const WINNERS_KEY = 'sac_survey_winners';
+        
+        // Google Sheets Backend URL - Replace with your deployed Apps Script URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/library/d/1J7kLHF1DmId2U6RLLkJF3qKfCZuX8fHLnge6wUyBLSX7bmjHx1yFVH4T/1'
+        //'https://script.google.com/macros/s/AKfycbwQX3Ch6fLi1YJVbkI1gOLbHnv4SFEmL5llOvjIoC71t_LMhjbf0KKdJre6BuLR134n/exec'
+        //'https://script.google.com/macros/s/AKfycbxzNxocDW1aYWzmwaH6Tr_aUB8h80_Gn5yHGw2csAyutniTWk5SMx0aGa6WixNYCc8bWQ/exec';
+        //        'https://script.google.com/macros/s/AKfycbxPvR8tQvCGeSEB-8mHk0rxUnAMbG8Rk4xgvncxVSfWJhgxQ5xvwHCNWoBhUeMwavLY8Q/exec'; // <-- PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+        
+        // Enable/disable cloud sync (set to true after configuring GOOGLE_SCRIPT_URL)
+        const CLOUD_SYNC_ENABLED = GOOGLE_SCRIPT_URL.length > 0;
 
         // State
         let currentParticipant = null;
@@ -753,13 +994,13 @@
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
 
-            if (section === 'survey') {
-                document.getElementById('survey-section').classList.remove('hidden');
-                document.getElementById('admin-section').classList.add('hidden');
-            } else {
-                document.getElementById('survey-section').classList.add('hidden');
-                document.getElementById('admin-section').classList.remove('hidden');
-            }
+            // Hide all sections
+            document.getElementById('survey-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('wifi-section').classList.add('hidden');
+            
+            // Show the selected section
+            document.getElementById(section + '-section').classList.remove('hidden');
         }
 
         // Survey Functions
@@ -796,7 +1037,7 @@
             document.getElementById('survey-step').classList.remove('hidden');
         }
 
-        function submitSurvey(e) {
+        async function submitSurvey(e) {
             e.preventDefault();
             const errorEl = document.getElementById('survey-error');
 
@@ -829,7 +1070,7 @@
                 isWinner: false
             };
 
-            saveResponse(response);
+            await saveResponse(response);
             
             document.getElementById('survey-step').classList.add('hidden');
             document.getElementById('success-step').classList.remove('hidden');
@@ -850,7 +1091,7 @@
         }
 
         // Admin Functions
-        function adminLogin() {
+        async function adminLogin() {
             const password = document.getElementById('adminPassword').value;
             const errorEl = document.getElementById('admin-error');
 
@@ -858,6 +1099,16 @@
                 isAdminLoggedIn = true;
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
+                
+                // Show loading state
+                document.getElementById('participantList').innerHTML = '<p style="text-align: center; color: #94a3b8;">Loading from cloud...</p>';
+                
+                // Fetch latest data from cloud
+                if (CLOUD_SYNC_ENABLED) {
+                    await fetchCloudResponses();
+                    await fetchCloudWinners();
+                }
+                
                 updateAdminDashboard();
             } else {
                 errorEl.textContent = 'Invalid password.';
@@ -868,6 +1119,18 @@
         function updateAdminDashboard() {
             const responses = getResponses();
             const winners = getWinners();
+            
+            // Update sync status indicator
+            const statusEl = document.getElementById('syncStatus');
+            if (CLOUD_SYNC_ENABLED) {
+                statusEl.textContent = '☁️ Cloud Sync ON';
+                statusEl.style.background = 'rgba(46, 213, 115, 0.2)';
+                statusEl.style.color = '#2ed573';
+            } else {
+                statusEl.textContent = '💾 Local Only';
+                statusEl.style.background = 'rgba(255, 193, 7, 0.2)';
+                statusEl.style.color = '#ffc107';
+            }
 
             // Update stats
             document.getElementById('totalResponses').textContent = responses.length;
@@ -940,9 +1203,10 @@
                 const winnerIdx = Math.floor(Math.random() * responses.length);
                 const winner = responses[winnerIdx];
 
-                // Mark as winner
+                // Mark as winner (local + cloud)
                 markAsWinner(winner.id);
                 saveWinner(winner);
+                markWinnerInCloud(winner.email, winner.name);
 
                 display.innerHTML = `
                     <div>🎉 WINNER 🎉</div>
@@ -997,11 +1261,28 @@
             }
         }
 
-        function resetResponses() {
-            if (confirm('⚠️ RESET ALL DATA?\n\nThis will permanently delete:\n• All survey responses\n• All winner records\n\nThis action cannot be undone!')) {
+        async function resetResponses() {
+            if (confirm('⚠️ RESET ALL DATA?\n\nThis will permanently delete:\n• All survey responses (local + Google Sheets)\n• All winner records\n\nThis action cannot be undone!')) {
                 if (confirm('Are you absolutely sure? Type "RESET" mentally and click OK to proceed.')) {
+                    // Reset local storage
                     localStorage.removeItem(STORAGE_KEY);
                     localStorage.removeItem(WINNERS_KEY);
+                    
+                    // Reset Google Sheets if enabled
+                    if (CLOUD_SYNC_ENABLED) {
+                        try {
+                            const response = await fetch(GOOGLE_SCRIPT_URL + '?action=resetAll');
+                            const result = await response.json();
+                            if (result.success) {
+                                console.log('Google Sheets data cleared');
+                            } else {
+                                console.error('Failed to clear Google Sheets:', result.error);
+                            }
+                        } catch (err) {
+                            console.error('Failed to reset cloud data:', err);
+                        }
+                    }
+                    
                     updateAdminDashboard();
                     document.getElementById('winnerDisplay').innerHTML = 'Click to draw a winner!';
                     document.getElementById('pastWinners').innerHTML = '';
@@ -1088,13 +1369,82 @@
         // Storage Functions
         function getResponses() {
             const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
+            if (!data) return [];
+            
+            const parsed = JSON.parse(data);
+            
+            // Handle case where data is a backup object {responses: [...]} instead of array
+            if (Array.isArray(parsed)) {
+                return parsed;
+            } else if (parsed && Array.isArray(parsed.responses)) {
+                return parsed.responses;
+            }
+            return [];
         }
 
-        function saveResponse(response) {
+        async function saveResponse(response) {
+            // Save locally as backup
             const responses = getResponses();
             responses.push(response);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+            
+            // Send to Google Sheets if enabled
+            if (CLOUD_SYNC_ENABLED) {
+                try {
+                    // Use redirect: 'follow' to handle Google's redirect
+                    const result = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        redirect: 'follow',
+                        body: JSON.stringify(response)
+                    });
+                    console.log('Response synced to Google Sheets', result);
+                } catch (err) {
+                    console.error('Failed to sync to cloud:', err);
+                    // Data is still saved locally, will sync later
+                }
+            }
+        }
+        
+        // Fetch responses from Google Sheets (for admin)
+        async function fetchCloudResponses() {
+            if (!CLOUD_SYNC_ENABLED) return getResponses();
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getResponses');
+                const data = await response.json();
+                // Update local storage with cloud data
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                return data;
+            } catch (err) {
+                console.error('Failed to fetch from cloud:', err);
+                return getResponses(); // Fallback to local
+            }
+        }
+        
+        // Fetch winners from Google Sheets
+        async function fetchCloudWinners() {
+            if (!CLOUD_SYNC_ENABLED) return getWinners();
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getWinners');
+                const data = await response.json();
+                localStorage.setItem(WINNERS_KEY, JSON.stringify(data));
+                return data;
+            } catch (err) {
+                console.error('Failed to fetch winners from cloud:', err);
+                return getWinners();
+            }
+        }
+        
+        // Mark winner in Google Sheets
+        async function markWinnerInCloud(email, name) {
+            if (!CLOUD_SYNC_ENABLED) return;
+            
+            try {
+                await fetch(GOOGLE_SCRIPT_URL + '?action=markWinner&email=' + encodeURIComponent(email) + '&name=' + encodeURIComponent(name));
+            } catch (err) {
+                console.error('Failed to mark winner in cloud:', err);
+            }
         }
 
         function markAsWinner(id) {
@@ -1108,7 +1458,17 @@
 
         function getWinners() {
             const data = localStorage.getItem(WINNERS_KEY);
-            return data ? JSON.parse(data) : [];
+            if (!data) return [];
+            
+            const parsed = JSON.parse(data);
+            
+            // Handle case where data is object instead of array
+            if (Array.isArray(parsed)) {
+                return parsed;
+            } else if (parsed && Array.isArray(parsed.winners)) {
+                return parsed.winners;
+            }
+            return [];
         }
 
         function saveWinner(winner) {
@@ -1122,6 +1482,32 @@
             if (!localStorage.getItem(STORAGE_KEY)) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
             }
+        }
+        
+        // Manual sync from cloud
+        async function syncFromCloud() {
+            if (!CLOUD_SYNC_ENABLED) {
+                alert('⚠️ Cloud sync not configured.\n\nTo enable:\n1. Set up Google Apps Script\n2. Paste the Web App URL in GOOGLE_SCRIPT_URL');
+                return;
+            }
+            
+            const btn = document.getElementById('syncBtn');
+            btn.textContent = '⏳ Syncing...';
+            btn.disabled = true;
+            
+            try {
+                await fetchCloudResponses();
+                await fetchCloudWinners();
+                updateAdminDashboard();
+                btn.textContent = '✅ Synced!';
+                setTimeout(() => { btn.textContent = '☁️ Sync'; }, 2000);
+            } catch (err) {
+                btn.textContent = '❌ Failed';
+                setTimeout(() => { btn.textContent = '☁️ Sync'; }, 2000);
+                alert('Sync failed: ' + err.message);
+            }
+            
+            btn.disabled = false;
         }
 
         // Utility Functions
