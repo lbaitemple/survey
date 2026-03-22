@@ -1,0 +1,110 @@
+{
+  "_documentation": {
+    "description": "This is a survey template file. Edit this to customize your survey questions.",
+    "questionTypes": {
+      "radio": "Single choice from options - use 'options' array",
+      "checkbox": "Multiple choice from options - use 'options' array", 
+      "scale": "Numeric scale - use 'min', 'max', 'minLabel', 'maxLabel'",
+      "textarea": "Long text input - use 'placeholder'",
+      "text": "Short text input - use 'placeholder'",
+      "email": "Email input with validation",
+      "number": "Numeric input - use 'min', 'max', 'placeholder'"
+    },
+    "requiredFields": "Each question needs: id (unique), type, label. Add 'required: true' for mandatory questions."
+  },
+  "templateVersion": "1.0",
+  "templateName": "SAC Conference Survey",
+  "description": "IEEE SAC Conference Engagement Survey for Banquet Gift Card Raffle",
+  "createdAt": "2026-03-22",
+  "settings": {
+    "title": "Conference-SAC Survey",
+    "subtitle": "Engagement at Banquet - Gift Card Raffle for Participants",
+    "successMessage": "Your survey has been submitted successfully.",
+    "raffleMessage": "You're now entered in the gift card raffle!",
+    "requireConferenceId": true,
+    "requireName": true,
+    "requireEmail": true
+  },
+  "questions": [
+    {
+      "id": "ieeeStatus",
+      "type": "radio",
+      "label": "Current IEEE Status",
+      "required": true,
+      "options": [
+        { "value": "IEEE Student", "label": "IEEE Student" },
+        { "value": "Non-Member", "label": "Non-Member" },
+        { "value": "Lapsed Member", "label": "Lapsed Member" },
+        { "value": "Senior Member", "label": "Senior Member" }
+      ]
+    },
+    {
+      "id": "graduationTimeframe",
+      "type": "radio",
+      "label": "Anticipated Graduation Timeframe",
+      "required": true,
+      "options": [
+        { "value": "Within 6 months", "label": "Within 6 months" },
+        { "value": "6-12 months", "label": "6-12 months" },
+        { "value": "More than 12 months", "label": "More than 12 months" }
+      ]
+    },
+    {
+      "id": "likelyJoinIEEE",
+      "type": "scale",
+      "label": "How likely are you to join IEEE after attending SAC?",
+      "required": true,
+      "min": 1,
+      "max": 5,
+      "minLabel": "Not Likely",
+      "maxLabel": "Very Likely"
+    },
+    {
+      "id": "awareYP",
+      "type": "scale",
+      "label": "How aware are you now of IEEE Young Professionals (YP) Offerings?",
+      "required": true,
+      "min": 1,
+      "max": 5,
+      "minLabel": "Not Aware",
+      "maxLabel": "Very Aware"
+    },
+    {
+      "id": "awareWIE",
+      "type": "scale",
+      "label": "How aware are you now of Women in Engineering Offerings?",
+      "required": true,
+      "min": 1,
+      "max": 3,
+      "minLabel": "Not Aware",
+      "maxLabel": "Very Aware"
+    },
+    {
+      "id": "likelyAttend",
+      "type": "scale",
+      "label": "How likely are you to attend another IEEE event in the next 6-12 months?",
+      "required": true,
+      "min": 1,
+      "max": 5,
+      "minLabel": "Not Likely",
+      "maxLabel": "Very Likely"
+    },
+    {
+      "id": "likelyMakeConnections",
+      "type": "scale",
+      "label": "How likely are you to make professional connections at IEEE events?",
+      "required": true,
+      "min": 1,
+      "max": 5,
+      "minLabel": "Not Likely",
+      "maxLabel": "Very Likely"
+    },
+    {
+      "id": "openResponse",
+      "type": "textarea",
+      "label": "What part of SAC was most valuable to you and why?",
+      "required": true,
+      "placeholder": "Share your thoughts..."
+    }
+  ]
+}

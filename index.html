@@ -477,6 +477,39 @@
             background: linear-gradient(90deg, #00d4ff, #7b2cbf);
         }
 
+        /* Admin Tabs */
+        .admin-tab {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px 10px 0 0;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-tab.active {
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+        }
+
+        .admin-tab-content {
+            animation: fadeIn 0.3s ease;
+        }
+
+        .admin-tab-content.hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .validation-item {
             padding: 10px 15px;
             margin-bottom: 8px;
@@ -583,157 +616,8 @@
             <!-- Survey Questions -->
             <div id="survey-step" class="hidden">
                 <form id="surveyForm">
-                    <!-- Q1: Current IEEE Status -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">1</span>Current IEEE Status</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="ieeeStatus" value="IEEE Student" required>
-                                IEEE Student
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="ieeeStatus" value="Non-Member">
-                                Non-Member
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="ieeeStatus" value="Lapsed Member">
-                                Lapsed Member
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Q2: Anticipated Graduation Timeframe -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">2</span>Anticipated Graduation Timeframe</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="graduationTimeframe" value="Within 6 months" required>
-                                Within 6 months
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="graduationTimeframe" value="6-12 months">
-                                6-12 months
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="graduationTimeframe" value="More than 12 months">
-                                More than 12 months
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Q3: Likelihood to join IEEE -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">3</span>How likely are you to join IEEE after attending SAC?</label>
-                        <div class="scale-group">
-                            <div class="scale-option">
-                                <input type="radio" name="likelyJoinIEEE" id="join1" value="1" required>
-                                <label for="join1">1</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyJoinIEEE" id="join2" value="2">
-                                <label for="join2">2</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyJoinIEEE" id="join3" value="3">
-                                <label for="join3">3</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyJoinIEEE" id="join4" value="4">
-                                <label for="join4">4</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyJoinIEEE" id="join5" value="5">
-                                <label for="join5">5</label>
-                            </div>
-                        </div>
-                        <div class="scale-labels">
-                            <span>Not Likely</span>
-                            <span>Very Likely</span>
-                        </div>
-                    </div>
-
-                    <!-- Q4: Awareness of YP Offerings -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">4</span>How aware are you now of IEEE Young Professionals (YP) Offerings?</label>
-                        <div class="scale-group">
-                            <div class="scale-option">
-                                <input type="radio" name="awareYP" id="yp1" value="1" required>
-                                <label for="yp1">1</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="awareYP" id="yp2" value="2">
-                                <label for="yp2">2</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="awareYP" id="yp3" value="3">
-                                <label for="yp3">3</label>
-                            </div>
-                        </div>
-                        <div class="scale-labels">
-                            <span>Not Aware</span>
-                            <span>Very Aware</span>
-                        </div>
-                    </div>
-
-                    <!-- Q5: Awareness of WIE Offerings -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">5</span>How aware are you now of Women in Engineering Offerings?</label>
-                        <div class="scale-group">
-                            <div class="scale-option">
-                                <input type="radio" name="awareWIE" id="wie1" value="1" required>
-                                <label for="wie1">1</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="awareWIE" id="wie2" value="2">
-                                <label for="wie2">2</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="awareWIE" id="wie3" value="3">
-                                <label for="wie3">3</label>
-                            </div>
-                        </div>
-                        <div class="scale-labels">
-                            <span>Not Aware</span>
-                            <span>Very Aware</span>
-                        </div>
-                    </div>
-
-                    <!-- Q6: Likelihood to attend another event -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">6</span>How likely are you to attend another IEEE event in the next 6-12 months?</label>
-                        <div class="scale-group">
-                            <div class="scale-option">
-                                <input type="radio" name="likelyAttend" id="attend1" value="1" required>
-                                <label for="attend1">1</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyAttend" id="attend2" value="2">
-                                <label for="attend2">2</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyAttend" id="attend3" value="3">
-                                <label for="attend3">3</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyAttend" id="attend4" value="4">
-                                <label for="attend4">4</label>
-                            </div>
-                            <div class="scale-option">
-                                <input type="radio" name="likelyAttend" id="attend5" value="5">
-                                <label for="attend5">5</label>
-                            </div>
-                        </div>
-                        <div class="scale-labels">
-                            <span>Not Likely</span>
-                            <span>Very Likely</span>
-                        </div>
-                    </div>
-
-                    <!-- Q7: Open Response -->
-                    <div class="form-group">
-                        <label class="required"><span class="question-number">7</span>What part of SAC was most valuable to you and why?</label>
-                        <textarea id="openResponse" placeholder="Share your thoughts..." required></textarea>
-                    </div>
+                    <!-- Questions will be rendered dynamically -->
+                    <div id="dynamic-questions"></div>
 
                     <div id="survey-error" class="error-message hidden"></div>
                     <button type="submit" class="btn btn-primary btn-center">Submit Survey 🎯</button>
@@ -771,16 +655,6 @@
                         <h2 style="display: inline;">📊 Admin Dashboard</h2>
                         <span id="syncStatus" style="margin-left: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;"></span>
                     </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                        <button class="btn btn-secondary" onclick="syncFromCloud()" id="syncBtn">☁️ Sync</button>
-                        <button class="btn btn-secondary" onclick="exportData()">📥 CSV</button>
-                        <button class="btn btn-secondary" onclick="downloadJSON()">💾 Save JSON</button>
-                        <label class="btn btn-secondary" style="cursor: pointer;">
-                            📂 Load JSON
-                            <input type="file" id="importFile" accept=".json" onchange="importJSON(event)" style="display: none;">
-                        </label>
-                        <button class="btn btn-danger" onclick="resetResponses()">🔄 Reset All</button>
-                    </div>
                 </div>
 
                 <div class="admin-stats">
@@ -798,27 +672,148 @@
                     </div>
                 </div>
 
-                <!-- Raffle Section -->
-                <div class="card" style="background: rgba(0, 212, 255, 0.1); margin-top: 20px;">
-                    <div class="raffle-container">
-                        <h3>🎰 Gift Card Raffle Draw</h3>
-                        <div class="raffle-wheel" id="raffleWheel">
-                            <div class="raffle-wheel-inner">
-                                <div class="winner-display" id="winnerDisplay">
-                                    Click to draw a winner!
+                <!-- Admin Tabs Navigation -->
+                <div class="admin-tabs" style="display: flex; gap: 5px; margin: 20px 0; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <button class="admin-tab active" onclick="showAdminTab('raffle')" id="tab-raffle">🎰 Raffle</button>
+                    <button class="admin-tab" onclick="showAdminTab('template')" id="tab-template">📝 Template</button>
+                    <button class="admin-tab" onclick="showAdminTab('data')" id="tab-data">💾 Data</button>
+                </div>
+
+                <!-- Tab: Raffle -->
+                <div id="admin-tab-raffle" class="admin-tab-content">
+                    <div class="card" style="background: rgba(0, 212, 255, 0.1);">
+                        <div class="raffle-container">
+                            <h3>🎰 Gift Card Raffle Draw</h3>
+                            <div class="raffle-wheel" id="raffleWheel">
+                                <div class="raffle-wheel-inner">
+                                    <div class="winner-display" id="winnerDisplay">
+                                        Click to draw a winner!
+                                    </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary" onclick="drawWinner()" id="drawBtn">🎲 Draw Winner</button>
+                            <div id="pastWinners" style="margin-top: 20px;"></div>
                         </div>
-                        <button class="btn btn-primary" onclick="drawWinner()" id="drawBtn">🎲 Draw Winner</button>
-                        <div id="pastWinners" style="margin-top: 20px;"></div>
+                    </div>
+
+                    <!-- Participants List -->
+                    <div style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 15px;">📋 Participants (<span id="participantCount">0</span>)</h3>
+                        <div class="participant-list" id="participantList">
+                            <p style="text-align: center; color: #94a3b8;">No participants yet</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Participants List -->
-                <div style="margin-top: 30px;">
-                    <h3 style="margin-bottom: 15px;">📋 Participants (<span id="participantCount">0</span>)</h3>
-                    <div class="participant-list" id="participantList">
-                        <p style="text-align: center; color: #94a3b8;">No participants yet</p>
+                <!-- Tab: Template -->
+                <div id="admin-tab-template" class="admin-tab-content hidden">
+                    <div class="card" style="background: rgba(123, 44, 191, 0.1);">
+                        <h3 style="margin-bottom: 15px;">📝 Survey Template Management</h3>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Customize survey questions by downloading, editing, and uploading a template.</p>
+                        
+                        <div id="templateInfo" style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                            <p><strong>Current Template:</strong> <span id="templateName">Default SAC Survey</span></p>
+                            <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 5px;"><span id="questionCount">7</span> questions</p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📥</div>
+                                <h4 style="margin-bottom: 10px;">Download Template</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Get the current template as JSON file to edit</p>
+                                <button class="btn btn-secondary" onclick="downloadTemplate()" style="width: 100%;">Download</button>
+                            </div>
+                            
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📤</div>
+                                <h4 style="margin-bottom: 10px;">Upload Template</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Load a custom template JSON file</p>
+                                <label class="btn btn-secondary" style="cursor: pointer; width: 100%; display: block;">
+                                    Upload
+                                    <input type="file" id="templateFile" accept=".json" onchange="uploadTemplate(event)" style="display: none;">
+                                </label>
+                            </div>
+                            
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🔄</div>
+                                <h4 style="margin-bottom: 10px;">Reset to Default</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Restore original SAC survey questions</p>
+                                <button class="btn btn-secondary" onclick="resetTemplate()" style="width: 100%;">Reset</button>
+                            </div>
+                            
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">👁️</div>
+                                <h4 style="margin-bottom: 10px;">Preview Survey</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">See how the survey looks to users</p>
+                                <button class="btn btn-secondary" onclick="previewTemplate()" style="width: 100%;">Preview</button>
+                            </div>
+                        </div>
+
+                        <!-- Template Help -->
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                            <h4 style="margin-bottom: 10px;">📖 Template Guide</h4>
+                            <p style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6;">
+                                <strong>Question Types:</strong><br>
+                                • <code>radio</code> - Single choice from options<br>
+                                • <code>checkbox</code> - Multiple choice<br>
+                                • <code>scale</code> - Numeric rating (1-5, 1-3, etc.)<br>
+                                • <code>textarea</code> - Long text response<br>
+                                • <code>text</code> - Short text input<br>
+                                • <code>number</code> - Numeric input
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Data -->
+                <div id="admin-tab-data" class="admin-tab-content hidden">
+                    <div class="card" style="background: rgba(46, 213, 115, 0.1);">
+                        <h3 style="margin-bottom: 15px;">💾 Data Operations</h3>
+                        <p style="color: #94a3b8; margin-bottom: 20px;">Export, import, sync, and manage survey response data.</p>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <!-- Cloud Sync -->
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">☁️</div>
+                                <h4 style="margin-bottom: 10px;">Cloud Sync</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Sync data with Google Sheets</p>
+                                <button class="btn btn-secondary" onclick="syncFromCloud()" id="syncBtn" style="width: 100%;">Sync Now</button>
+                            </div>
+
+                            <!-- Export CSV -->
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
+                                <h4 style="margin-bottom: 10px;">Export CSV</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Download responses as spreadsheet</p>
+                                <button class="btn btn-secondary" onclick="exportData()" style="width: 100%;">Export</button>
+                            </div>
+
+                            <!-- Save JSON -->
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">💾</div>
+                                <h4 style="margin-bottom: 10px;">Save Backup</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Download full backup as JSON</p>
+                                <button class="btn btn-secondary" onclick="downloadJSON()" style="width: 100%;">Save JSON</button>
+                            </div>
+
+                            <!-- Load JSON -->
+                            <div class="card" style="background: rgba(255,255,255,0.05); text-align: center; padding: 20px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📂</div>
+                                <h4 style="margin-bottom: 10px;">Load Backup</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Restore from JSON backup file</p>
+                                <label class="btn btn-secondary" style="cursor: pointer; width: 100%; display: block;">
+                                    Load JSON
+                                    <input type="file" id="importFile" accept=".json" onchange="importJSON(event)" style="display: none;">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Danger Zone -->
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 71, 87, 0.1); border-radius: 10px; border: 1px solid rgba(255, 71, 87, 0.3);">
+                            <h4 style="color: #ff4757; margin-bottom: 10px;">⚠️ Danger Zone</h4>
+                            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">These actions are destructive and cannot be undone. Use with caution.</p>
+                            <button class="btn btn-danger" onclick="resetResponses()">🗑️ Reset All Data</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -969,6 +964,7 @@ network={
         const ADMIN_PASSWORD = 'sac2026'; // Change this!
         const STORAGE_KEY = 'sac_survey_responses';
         const WINNERS_KEY = 'sac_survey_winners';
+        const TEMPLATE_KEY = 'sac_survey_template';
         
         // Google Sheets Backend URL - Replace with your deployed Apps Script URL
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/library/d/1J7kLHF1DmId2U6RLLkJF3qKfCZuX8fHLnge6wUyBLSX7bmjHx1yFVH4T/1'
@@ -979,15 +975,286 @@ network={
         // Enable/disable cloud sync (set to true after configuring GOOGLE_SCRIPT_URL)
         const CLOUD_SYNC_ENABLED = GOOGLE_SCRIPT_URL.length > 0;
 
+        // Default Survey Template
+        const DEFAULT_TEMPLATE = {
+            templateVersion: "1.0",
+            templateName: "SAC Conference Survey",
+            description: "IEEE SAC Conference Engagement Survey",
+            settings: {
+                title: "Conference-SAC Survey",
+                subtitle: "Engagement at Banquet - Gift Card Raffle for Participants",
+                successMessage: "Your survey has been submitted successfully.",
+                raffleMessage: "You're now entered in the gift card raffle!"
+            },
+            questions: [
+                {
+                    id: "ieeeStatus",
+                    type: "radio",
+                    label: "Current IEEE Status",
+                    required: true,
+                    options: [
+                        { value: "IEEE Student", label: "IEEE Student" },
+                        { value: "Non-Member", label: "Non-Member" },
+                        { value: "Lapsed Member", label: "Lapsed Member" }
+                    ]
+                },
+                {
+                    id: "graduationTimeframe",
+                    type: "radio",
+                    label: "Anticipated Graduation Timeframe",
+                    required: true,
+                    options: [
+                        { value: "Within 6 months", label: "Within 6 months" },
+                        { value: "6-12 months", label: "6-12 months" },
+                        { value: "More than 12 months", label: "More than 12 months" }
+                    ]
+                },
+                {
+                    id: "likelyJoinIEEE",
+                    type: "scale",
+                    label: "How likely are you to join IEEE after attending SAC?",
+                    required: true,
+                    min: 1,
+                    max: 5,
+                    minLabel: "Not Likely",
+                    maxLabel: "Very Likely"
+                },
+                {
+                    id: "awareYP",
+                    type: "scale",
+                    label: "How aware are you now of IEEE Young Professionals (YP) Offerings?",
+                    required: true,
+                    min: 1,
+                    max: 3,
+                    minLabel: "Not Aware",
+                    maxLabel: "Very Aware"
+                },
+                {
+                    id: "awareWIE",
+                    type: "scale",
+                    label: "How aware are you now of Women in Engineering Offerings?",
+                    required: true,
+                    min: 1,
+                    max: 3,
+                    minLabel: "Not Aware",
+                    maxLabel: "Very Aware"
+                },
+                {
+                    id: "likelyAttend",
+                    type: "scale",
+                    label: "How likely are you to attend another IEEE event in the next 6-12 months?",
+                    required: true,
+                    min: 1,
+                    max: 5,
+                    minLabel: "Not Likely",
+                    maxLabel: "Very Likely"
+                },
+                {
+                    id: "openResponse",
+                    type: "textarea",
+                    label: "What part of SAC was most valuable to you and why?",
+                    required: true,
+                    placeholder: "Share your thoughts..."
+                }
+            ]
+        };
+
         // State
         let currentParticipant = null;
         let isAdminLoggedIn = false;
+        let currentTemplate = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadResponses();
+            loadTemplate();
+            renderSurveyQuestions();
             document.getElementById('surveyForm').addEventListener('submit', submitSurvey);
         });
+        
+        // ============================================
+        // TEMPLATE FUNCTIONS
+        // ============================================
+        
+        function loadTemplate() {
+            const saved = localStorage.getItem(TEMPLATE_KEY);
+            if (saved) {
+                try {
+                    currentTemplate = JSON.parse(saved);
+                } catch (e) {
+                    currentTemplate = DEFAULT_TEMPLATE;
+                }
+            } else {
+                currentTemplate = DEFAULT_TEMPLATE;
+            }
+            updateTemplateInfo();
+        }
+        
+        function saveTemplate(template) {
+            currentTemplate = template;
+            localStorage.setItem(TEMPLATE_KEY, JSON.stringify(template));
+            updateTemplateInfo();
+            renderSurveyQuestions();
+        }
+        
+        function updateTemplateInfo() {
+            const nameEl = document.getElementById('templateName');
+            const countEl = document.getElementById('questionCount');
+            if (nameEl && currentTemplate) {
+                nameEl.textContent = currentTemplate.templateName || 'Custom Survey';
+            }
+            if (countEl && currentTemplate) {
+                countEl.textContent = currentTemplate.questions ? currentTemplate.questions.length : 0;
+            }
+        }
+        
+        function renderSurveyQuestions() {
+            const container = document.getElementById('dynamic-questions');
+            if (!container || !currentTemplate) return;
+            
+            let html = '';
+            currentTemplate.questions.forEach((q, index) => {
+                html += renderQuestion(q, index + 1);
+            });
+            container.innerHTML = html;
+        }
+        
+        function renderQuestion(question, number) {
+            const requiredClass = question.required ? 'required' : '';
+            const requiredAttr = question.required ? 'required' : '';
+            
+            let html = `<div class="form-group">`;
+            html += `<label class="${requiredClass}"><span class="question-number">${number}</span>${question.label}</label>`;
+            
+            switch (question.type) {
+                case 'radio':
+                    html += `<div class="radio-group">`;
+                    question.options.forEach((opt, i) => {
+                        html += `
+                            <label class="radio-option">
+                                <input type="radio" name="${question.id}" value="${opt.value}" ${i === 0 && question.required ? requiredAttr : ''}>
+                                ${opt.label}
+                            </label>`;
+                    });
+                    html += `</div>`;
+                    break;
+                    
+                case 'checkbox':
+                    html += `<div class="checkbox-group">`;
+                    question.options.forEach(opt => {
+                        html += `
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="${question.id}" value="${opt.value}">
+                                ${opt.label}
+                            </label>`;
+                    });
+                    html += `</div>`;
+                    break;
+                    
+                case 'scale':
+                    html += `<div class="scale-group">`;
+                    for (let i = question.min; i <= question.max; i++) {
+                        const inputId = `${question.id}_${i}`;
+                        html += `
+                            <div class="scale-option">
+                                <input type="radio" name="${question.id}" id="${inputId}" value="${i}" ${i === question.min && question.required ? requiredAttr : ''}>
+                                <label for="${inputId}">${i}</label>
+                            </div>`;
+                    }
+                    html += `</div>`;
+                    if (question.minLabel || question.maxLabel) {
+                        html += `<div class="scale-labels">
+                            <span>${question.minLabel || ''}</span>
+                            <span>${question.maxLabel || ''}</span>
+                        </div>`;
+                    }
+                    break;
+                    
+                case 'textarea':
+                    html += `<textarea id="${question.id}" name="${question.id}" placeholder="${question.placeholder || ''}" ${requiredAttr}></textarea>`;
+                    break;
+                    
+                case 'text':
+                    html += `<input type="text" id="${question.id}" name="${question.id}" placeholder="${question.placeholder || ''}" ${requiredAttr}>`;
+                    break;
+                    
+                case 'email':
+                    html += `<input type="email" id="${question.id}" name="${question.id}" placeholder="${question.placeholder || ''}" ${requiredAttr}>`;
+                    break;
+                    
+                case 'number':
+                    html += `<input type="number" id="${question.id}" name="${question.id}" min="${question.min || ''}" max="${question.max || ''}" placeholder="${question.placeholder || ''}" ${requiredAttr}>`;
+                    break;
+            }
+            
+            html += `</div>`;
+            return html;
+        }
+        
+        function downloadTemplate() {
+            const template = currentTemplate || DEFAULT_TEMPLATE;
+            const json = JSON.stringify(template, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'survey-template.json';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function uploadTemplate(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const template = JSON.parse(e.target.result);
+                    
+                    // Validate template structure
+                    if (!template.questions || !Array.isArray(template.questions)) {
+                        throw new Error('Invalid template: missing questions array');
+                    }
+                    
+                    // Validate each question has required fields
+                    template.questions.forEach((q, i) => {
+                        if (!q.id || !q.type || !q.label) {
+                            throw new Error(`Invalid question at index ${i}: missing id, type, or label`);
+                        }
+                    });
+                    
+                    saveTemplate(template);
+                    alert('✅ Template uploaded successfully!\n\n' + template.questions.length + ' questions loaded.');
+                    
+                } catch (error) {
+                    alert('❌ Error loading template: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        
+        function resetTemplate() {
+            if (confirm('Reset to default template? This will remove any custom questions.')) {
+                localStorage.removeItem(TEMPLATE_KEY);
+                currentTemplate = DEFAULT_TEMPLATE;
+                updateTemplateInfo();
+                renderSurveyQuestions();
+                alert('✅ Template reset to default.');
+            }
+        }
+        
+        function previewTemplate() {
+            // Show the survey section temporarily
+            showSection('survey');
+            // Reset to registration step
+            document.getElementById('registration-step').classList.add('hidden');
+            document.getElementById('survey-step').classList.remove('hidden');
+            document.getElementById('success-step').classList.add('hidden');
+            
+            alert('👁️ Preview Mode\n\nYou can now see how the survey looks with the current template.\n\nNote: Submissions in preview mode will NOT be saved.');
+        }
 
         // Navigation
         function showSection(section) {
@@ -1001,6 +1268,19 @@ network={
             
             // Show the selected section
             document.getElementById(section + '-section').classList.remove('hidden');
+        }
+
+        // Admin Tab Navigation
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            // Hide all tab contents
+            document.querySelectorAll('.admin-tab-content').forEach(content => content.classList.add('hidden'));
+
+            // Show selected tab content
+            document.getElementById('admin-tab-' + tabName).classList.remove('hidden');
         }
 
         // Survey Functions
@@ -1040,18 +1320,41 @@ network={
         async function submitSurvey(e) {
             e.preventDefault();
             const errorEl = document.getElementById('survey-error');
-
             const formData = new FormData(e.target);
-            const ieeeStatus = formData.get('ieeeStatus');
-            const graduationTimeframe = formData.get('graduationTimeframe');
-            const likelyJoinIEEE = formData.get('likelyJoinIEEE');
-            const awareYP = formData.get('awareYP');
-            const awareWIE = formData.get('awareWIE');
-            const likelyAttend = formData.get('likelyAttend');
-            const openResponse = document.getElementById('openResponse').value.trim();
+            
+            // Dynamically collect answers based on template
+            const answers = {};
+            let allAnswered = true;
+            
+            currentTemplate.questions.forEach(q => {
+                let value = formData.get(q.id);
+                
+                // Handle textarea separately (might have id instead of name)
+                if (q.type === 'textarea') {
+                    const textarea = document.getElementById(q.id);
+                    value = textarea ? textarea.value.trim() : '';
+                }
+                
+                // Handle checkbox (multiple values)
+                if (q.type === 'checkbox') {
+                    value = formData.getAll(q.id);
+                }
+                
+                // Check if required question is answered
+                if (q.required && (!value || (Array.isArray(value) && value.length === 0))) {
+                    allAnswered = false;
+                }
+                
+                // Parse numeric values for scale questions
+                if (q.type === 'scale' || q.type === 'number') {
+                    answers[q.id] = value ? parseInt(value) : null;
+                } else {
+                    answers[q.id] = value;
+                }
+            });
 
-            if (!ieeeStatus || !graduationTimeframe || !likelyJoinIEEE || !awareYP || !awareWIE || !likelyAttend || !openResponse) {
-                errorEl.textContent = 'Please answer all questions.';
+            if (!allAnswered) {
+                errorEl.textContent = 'Please answer all required questions.';
                 errorEl.classList.remove('hidden');
                 return;
             }
@@ -1059,13 +1362,7 @@ network={
             const response = {
                 id: generateId(),
                 ...currentParticipant,
-                ieeeStatus,
-                graduationTimeframe,
-                likelyJoinIEEE: parseInt(likelyJoinIEEE),
-                awareYP: parseInt(awareYP),
-                awareWIE: parseInt(awareWIE),
-                likelyAttend: parseInt(likelyAttend),
-                openResponse,
+                ...answers,
                 submittedAt: new Date().toISOString(),
                 isWinner: false
             };
@@ -1083,7 +1380,6 @@ network={
             document.getElementById('participantName').value = '';
             document.getElementById('participantEmail').value = '';
             document.getElementById('surveyForm').reset();
-            document.getElementById('openResponse').value = '';
 
             document.getElementById('success-step').classList.add('hidden');
             document.getElementById('survey-step').classList.add('hidden');
@@ -1137,10 +1433,23 @@ network={
             document.getElementById('participantCount').textContent = responses.length;
 
             if (responses.length > 0) {
-                const avgJoin = (responses.reduce((sum, r) => sum + r.likelyJoinIEEE, 0) / responses.length).toFixed(1);
-                const avgAttend = (responses.reduce((sum, r) => sum + r.likelyAttend, 0) / responses.length).toFixed(1);
-                document.getElementById('avgJoinScore').textContent = avgJoin;
-                document.getElementById('avgAttendScore').textContent = avgAttend;
+                // Calculate averages for scale questions (if they exist)
+                const joinScores = responses.filter(r => r.likelyJoinIEEE != null).map(r => r.likelyJoinIEEE);
+                const attendScores = responses.filter(r => r.likelyAttend != null).map(r => r.likelyAttend);
+                
+                if (joinScores.length > 0) {
+                    const avgJoin = (joinScores.reduce((sum, v) => sum + v, 0) / joinScores.length).toFixed(1);
+                    document.getElementById('avgJoinScore').textContent = avgJoin;
+                } else {
+                    document.getElementById('avgJoinScore').textContent = 'N/A';
+                }
+                
+                if (attendScores.length > 0) {
+                    const avgAttend = (attendScores.reduce((sum, v) => sum + v, 0) / attendScores.length).toFixed(1);
+                    document.getElementById('avgAttendScore').textContent = avgAttend;
+                } else {
+                    document.getElementById('avgAttendScore').textContent = 'N/A';
+                }
             }
 
             // Update participant list
@@ -1151,12 +1460,12 @@ network={
                 listEl.innerHTML = responses.map(r => `
                     <div class="participant-item ${r.isWinner ? 'winner' : ''}">
                         <div>
-                            <strong>${r.name}</strong>
+                            <strong>${r.name || 'Unknown'}</strong>
                             <br>
-                            <small style="color: #94a3b8;">${r.email} | ID: ${r.conferenceId}</small>
+                            <small style="color: #94a3b8;">${r.email || ''} | ID: ${r.conferenceId || ''}</small>
                         </div>
                         <div>
-                            ${r.isWinner ? '<span class="badge winner">🏆 Winner</span>' : '<span class="badge">' + r.ieeeStatus + '</span>'}
+                            ${r.isWinner ? '<span class="badge winner">🏆 Winner</span>' : '<span class="badge">' + (r.ieeeStatus || 'Participant') + '</span>'}
                         </div>
                     </div>
                 `).join('');
@@ -1227,25 +1536,40 @@ network={
                 return;
             }
 
-            const headers = ['ID', 'Conference ID', 'Name', 'Email', 'IEEE Status', 'Graduation Timeframe', 
-                           'Likely Join IEEE (1-5)', 'Aware YP (1-3)', 'Aware WIE (1-3)', 
-                           'Likely Attend (1-5)', 'Most Valuable Part', 'Submitted At', 'Is Winner'];
+            // Build headers dynamically from template
+            const baseHeaders = ['ID', 'Conference ID', 'Name', 'Email'];
+            const questionHeaders = currentTemplate.questions.map(q => q.label);
+            const endHeaders = ['Submitted At', 'Is Winner'];
+            const headers = [...baseHeaders, ...questionHeaders, ...endHeaders];
 
-            const rows = responses.map(r => [
-                r.id,
-                r.conferenceId,
-                r.name,
-                r.email,
-                r.ieeeStatus,
-                r.graduationTimeframe,
-                r.likelyJoinIEEE,
-                r.awareYP,
-                r.awareWIE,
-                r.likelyAttend,
-                `"${r.openResponse.replace(/"/g, '""')}"`,
-                r.submittedAt,
-                r.isWinner ? 'Yes' : 'No'
-            ]);
+            const rows = responses.map(r => {
+                const baseData = [
+                    r.id || '',
+                    r.conferenceId || '',
+                    r.name || '',
+                    r.email || ''
+                ];
+                
+                // Get question answers dynamically
+                const questionData = currentTemplate.questions.map(q => {
+                    let value = r[q.id];
+                    if (value === undefined || value === null) return '';
+                    if (typeof value === 'string' && value.includes(',')) {
+                        return `"${value.replace(/"/g, '""')}"`;
+                    }
+                    if (Array.isArray(value)) {
+                        return `"${value.join('; ')}"`;
+                    }
+                    return value;
+                });
+                
+                const endData = [
+                    r.submittedAt || '',
+                    r.isWinner ? 'Yes' : 'No'
+                ];
+                
+                return [...baseData, ...questionData, ...endData];
+            });
 
             const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
             downloadCSV(csv, 'sac_survey_responses.csv');
